@@ -1,9 +1,7 @@
+import MainLayout from "./components/layout/MainLayout";
+
 const App = () => {
-  return (
-    <div>
-      <p> University-Management-client</p>
-    </div>
-  );
+  return <MainLayout />;
 };
 
 export default App;
