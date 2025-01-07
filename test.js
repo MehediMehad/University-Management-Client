@@ -29,6 +29,30 @@ export const adminPaths = [
     ],
   },
 ];
+
+const newArray = adminPaths.reduce((acc, item) => {
+  if (item.path && item.element) {
+    acc.push({
+      key: item.path,
+      label: "NAV",
+    });
+  }
+  if (item.children) {
+    acc.push({
+      key: item.name,
+      label: "NAV",
+      children: item.children.map((child) => ({
+        key: child.name,
+        label: "NAV",
+      })),
+    });
+  }
+  return acc;
+}, []);
+
+console.dir(newArray, { depth: null });
+// console.log(JSON.stringify(newArray, null, 2));
+
 const adminRouts = adminPaths.reduce((acc, item) => {
   if (item.index && item.element) {
     acc.push({
@@ -52,5 +76,4 @@ const adminRouts = adminPaths.reduce((acc, item) => {
   }
   return acc;
 }, []);
-
-console.log(adminRouts);
+// console.log(adminRouts);
