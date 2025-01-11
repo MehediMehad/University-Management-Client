@@ -67,35 +67,35 @@ export const adminSidebarItems = adminPaths.reduce(
   []
 );
 
-// Programmatic way
-type TAdminRoute = {
-  path?: string;
-  element: JSX.Element;
-  index?: boolean;
-};
-export const adminRoutes = adminPaths.reduce<TAdminRoute[]>((acc, item) => {
-  if (item.index && item.element) {
-    acc.push({
-      index: item.index,
-      element: item.element,
-    });
-  }
-  if (item.name && item.element && item.path) {
-    acc.push({
-      path: item.path,
-      element: item.element,
-    });
-  }
-  if (item.children) {
-    item.children.forEach((child) => {
-      acc.push({
-        path: child.path,
-        element: child.element,
-      });
-    });
-  }
-  return acc;
-}, []);
+// // Programmatic way
+// type TAdminRoute = {
+//   path?: string;
+//   element: JSX.Element;
+//   index?: boolean;
+// };
+// export const adminRoutes = adminPaths.reduce<TAdminRoute[]>((acc, item) => {
+//   if (item.index && item.element) {
+//     acc.push({
+//       index: item.index,
+//       element: item.element,
+//     });
+//   }
+//   if (item.name && item.element && item.path) {
+//     acc.push({
+//       path: item.path,
+//       element: item.element,
+//     });
+//   }
+//   if (item.children) {
+//     item.children.forEach((child) => {
+//       acc.push({
+//         path: child.path,
+//         element: child.element,
+//       });
+//     });
+//   }
+//   return acc;
+// }, []);
 
 // ! Hard coded way
 // export const adminRoutes = [
