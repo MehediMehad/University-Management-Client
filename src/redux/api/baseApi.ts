@@ -4,7 +4,7 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api/v1",
-    credentials: "include",
+    credentials: "include", // Cookies ও Credentials পাঠানোর জন্য
   }),
   endpoints: () => ({}),
 });
