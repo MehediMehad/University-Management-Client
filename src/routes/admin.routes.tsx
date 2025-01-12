@@ -18,6 +18,11 @@ export const adminPaths = [
     children: [
       {
         name: "Dashboard",
+        path: "dashboard",
+        element: <AdminDashboard />,
+      },
+      {
+        name: "Create Admin",
         path: "create-admin",
         element: <CreateAdmin />,
       },
