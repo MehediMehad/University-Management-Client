@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldValues, SubmitErrorHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
 import { Button, Col, Flex } from "antd";
@@ -8,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSemesterSchema } from "../../../schemas/academicManagement.schema";
 import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
+import { TResponse } from "../../../types/global";
 
 const currentYear = new Date().getFullYear();
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -27,16 +29,31 @@ const CreateAcademicSemester = () => {
       startMonth: data.startMonth,
       endMonth: data.endMonth,
     };
-
+    const toastId = toast.loading("Logging in");
     try {
-      console.log(semesterData);
-      const res = await addAcademicSemester(semesterData);
+      const res = (await addAcademicSemester(semesterData)) as TResponse;
+      console.log(res);
+
+      if (res.error) {
+        toast.dismiss(toastId);
+        toast.error(
+          res.error.data.message || "Create Academic Semester Error",
+          { duration: 3000 }
+        );
+      } else {
+        toast.dismiss(toastId);
+        toast.success(res.data.message || "Semester Created Successfully!", {
+          duration: 3000,
+        });
+      }
       console.log("res", res);
-    } catch (err) {
-      toast.error("ss");
+    } catch (err: any) {
+      toast.dismiss(toastId);
+      toast.error(err.data.message || "Create Academic Semester Error", {
+        duration: 3000,
+      });
     }
   };
-
   return (
     <Flex justify="center" align="center">
       <Col span={8}>
