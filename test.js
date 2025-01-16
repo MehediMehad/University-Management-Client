@@ -77,3 +77,36 @@ const adminRouts = adminPaths.reduce((acc, item) => {
   return acc;
 }, []);
 // console.log(adminRouts);
+
+const data = [
+  {
+    key: "6789199380e9e7567a2c25f3",
+    name: "Fall",
+    startMonth: "July",
+    endMonth: "June",
+    year: "2026",
+  },
+  {
+    key: "6789193b80e9e7567a2c25da",
+    name: "Summer",
+    startMonth: "July",
+    endMonth: "June",
+    year: "2028",
+  },
+  {
+    key: "6789188b80e9e7567a2c25d6",
+    name: "Fall",
+    startMonth: "July",
+    endMonth: "June",
+    year: "2028",
+  },
+];
+
+const filters = Array.from(
+  new Set(data.map((item) => item.name)) // Get unique `name` values
+).map((uniqueName) => ({
+  text: uniqueName,
+  value: uniqueName,
+}));
+
+console.log("xxxsdd", { filters });

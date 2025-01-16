@@ -7,11 +7,16 @@ const academicManagementApi = baseApi.injectEndpoints({
     getAllSemesters: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
-        params.append("name", "Autumn");
+
+        if (args) {
+          args.forEach((item) => {
+            params.append(item.name, item.value);
+          });
+        }
         return {
           url: "/academic-semesters",
           method: "GET",
-          params: { name: args },
+          params: params,
         };
       },
       transformResponse: (response: TResponseRedux<TAcademicSemester[]>) => {
