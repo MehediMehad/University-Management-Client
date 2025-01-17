@@ -1,4 +1,4 @@
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Button, Table, TableColumnsType, TableProps } from "antd";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
 import { TAcademicSemester } from "../../../types/academicManagement.type";
 import { useState } from "react";
@@ -30,6 +30,7 @@ const AcademicSemester = () => {
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
+      key: "name",
       dataIndex: "name",
       showSorterTooltip: { target: "full-header" },
       filters: [
@@ -67,11 +68,24 @@ const AcademicSemester = () => {
     },
     {
       title: "Start Month",
+      key: "startMonth",
       dataIndex: "startMonth",
     },
     {
       title: "End Month",
+      key: "endMonth",
       dataIndex: "endMonth",
+    },
+    {
+      title: "Action",
+      key: "x",
+      render: () => {
+        return (
+          <div>
+            <Button>Update</Button>
+          </div>
+        );
+      },
     },
   ];
 
