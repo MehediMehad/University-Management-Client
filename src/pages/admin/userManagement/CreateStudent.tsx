@@ -6,6 +6,7 @@ import PHSelect from "../../../components/form/PHSelect";
 import { bloodGroupOptions, genderOptions } from "../../../constants/global";
 import { semesterOptions } from "../../../constants/semester";
 import PHDatePicker from "../../../components/form/PHDatePicker";
+import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
 
 const studentDummyData = {
   password: "student123",
@@ -85,6 +86,16 @@ const studentDefaultValues = {
 };
 
 const CreateStudent = () => {
+  const { data: semesterData, isLoading: semesterLoading } =
+    useGetAllSemestersQuery(undefined);
+
+  const semesterOptions = semesterData?.data?.map((item) => ({
+    value: item._id,
+    label: `${item.name} ${item.year}`,
+  }));
+  console.log("=>", semesterData);
+  console.log("=>", semesterLoading);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
     // const formData = new FormData();
@@ -246,6 +257,7 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
                 options={semesterOptions}
+                disabled={semesterLoading}
                 name="admissionSemester"
                 label="Admission Semester"
               />
