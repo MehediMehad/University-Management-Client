@@ -20,7 +20,6 @@ const academicManagementApi = baseApi.injectEndpoints({
         };
       },
       transformResponse: (response: TResponseRedux<TAcademicSemester[]>) => {
-        console.log("inside redux", response);
         return {
           data: response.data,
           meta: response.meta,

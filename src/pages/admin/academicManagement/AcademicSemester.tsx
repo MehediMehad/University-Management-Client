@@ -9,8 +9,13 @@ type TTableData = Pick<
 
 const AcademicSemester = () => {
   const [params, setParams] = useState([]);
-  const { data: semesterData } = useGetAllSemestersQuery(params);
-  console.log(semesterData);
+  const {
+    data: semesterData,
+    isLoading,
+    isFetching,
+  } = useGetAllSemestersQuery(params);
+  console.log({ isLoading }, { isFetching });
+
   const tableData = semesterData?.data?.map(
     ({ _id, name, startMonth, endMonth, year }) => ({
       key: _id,
@@ -20,7 +25,6 @@ const AcademicSemester = () => {
       year,
     })
   );
-  console.log("Table Data =>", tableData);
 
   const columns: TableColumnsType<TTableData> = [
     {
@@ -77,13 +81,6 @@ const AcademicSemester = () => {
     extra
   ) => {
     console.log("params", { filters, extra });
-    // if (extra.action === "filter") {
-    //   const queryParams = [];
-    //   filters.name?.forEach((item) =>
-    //     queryParams.push({ name: "name", value: item })
-    //   );
-    //   setParams(queryParams);
-    // }
     if (extra.action === "filter") {
       const queryParams = [];
       filters.name?.forEach((item) =>
@@ -95,8 +92,12 @@ const AcademicSemester = () => {
       setParams(queryParams);
     }
   };
+  if (isLoading) {
+    return <p>Loading....</p>;
+  }
   return (
     <Table<TTableData>
+      loading={isFetching}
       columns={columns}
       dataSource={tableData}
       onChange={onChange}
