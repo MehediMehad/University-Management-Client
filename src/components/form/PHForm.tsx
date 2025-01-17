@@ -5,6 +5,7 @@ import {
   FieldValues,
   FormProvider,
   SubmitErrorHandler,
+  SubmitHandler,
   useForm,
 } from "react-hook-form";
 type TFormConfig = {
@@ -32,9 +33,14 @@ const PHForm = ({
   }
   const methods = useForm(formConfig);
 
+  const submit: SubmitHandler<FieldValues> = (data) => {
+    onSubmit(data);
+    methods.reset();
+  };
+
   return (
     <FormProvider {...methods}>
-      <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
+      <Form layout="vertical" onFinish={methods.handleSubmit(submit)}>
         {children}
       </Form>
     </FormProvider>
