@@ -1,7 +1,10 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
-import { Button } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
+import PHSelect from "../../../components/form/PHSelect";
+import { bloodGroupOptions, genderOptions } from "../../../constants/global";
+import { semesterOptions } from "../../../constants/semester";
 
 const studentDummyData = {
   password: "student123",
@@ -11,13 +14,16 @@ const studentDummyData = {
       middleName: "Ali",
       lastName: "Khan",
     },
+
     gender: "male",
     dateOfBirth: "2002-05-15",
+    bloodGroup: "A+",
+
     email: "zobind9@example.com",
     contactNo: "+1234567890",
     emergencyContactNo: "+0987654321",
-    bloodGroup: "A+",
     permanentAddress: "123 Main St, Hometown, Country",
+
     guardian: {
       fatherName: "Richard Doe",
       fatherOccupation: "Engineer",
@@ -26,32 +32,197 @@ const studentDummyData = {
       motherOccupation: "Teacher",
       motherContactNo: "+1234598765",
     },
+
     localGuardian: {
       name: "Mike Ross",
       occupation: "Lawyer",
       address: "456 Elm St, Hometown, Country",
       contactNo: "+1122334455",
     },
+
     admissionSemester: "6753e1d956c0388297e7976d",
     academicDepartment: "6753fb23d9f6c4dd8a0a4873",
-    profileImg: "https://example.com/profile.jpg",
   },
 };
 
 const CreateStudent = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // console.log(data);
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
+    console.log(data);
+    // const formData = new FormData();
+    // formData.append("data", JSON.stringify(data));
 
     //! This is for development just for checking
-    console.log(Object.fromEntries(formData));
+    // console.log(Object.fromEntries(formData));
   };
   return (
-    <PHForm onSubmit={onSubmit}>
-      <PHInput type="text" name="name" label="Name" />
-      <Button htmlType="submit">Submit</Button>
-    </PHForm>
+    <Row>
+      <Col span={24}>
+        <PHForm onSubmit={onSubmit}>
+          <Divider>Personal Info.</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={12} lg={8}>
+              <PHInput type="text" name="name.firstName" label="First Name" />
+            </Col>
+            <Col span={24} md={12} lg={8}>
+              <PHInput type="text" name="name.middleName" label="Middle Name" />
+            </Col>
+            <Col span={24} md={12} lg={8}>
+              <PHInput type="text" name="name.lastName" label="Last Name" />
+            </Col>
+
+            <Col span={24} md={12} lg={8}>
+              <PHSelect options={genderOptions} name="gender" label="Gender" />
+            </Col>
+            <Col span={24} md={12} lg={8}>
+              <PHInput type="text" name="dateOfBirth" label="Date Of Birth" />
+            </Col>
+            <Col span={24} md={12} lg={8}>
+              <PHSelect
+                options={bloodGroupOptions}
+                name="bloodGroup"
+                label="Blood Group"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Picture">
+                    <Input
+                      size="large"
+                      type="file"
+                      value={value?.fileName}
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
+              />
+            </Col>
+          </Row>
+          <Divider>Contact Info.</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={12} lg={8}>
+              <PHInput type="email" name="email" label="Email" />
+            </Col>
+            <Col span={24} md={12} lg={8}>
+              <PHInput type="text" name="contactNo" label="Contact" />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="emergencyContactNo"
+                label="Emergency Contact"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="presentAddress"
+                label="Present Address"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="permanentAddress"
+                label="Permanent Address"
+              />
+            </Col>
+          </Row>
+          <Divider>Guardian</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.fatherName"
+                label="Father Name"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.fatherOccupation"
+                label="Father Occupation"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.fatherContactNo"
+                label="Father ContactNo"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.motherName"
+                label="Mother Name"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.motherOccupation"
+                label="Mother Occupation"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="guardian.motherContactNo"
+                label="Mother ContactNo"
+              />
+            </Col>
+          </Row>
+          <Divider>Local Guardian</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput type="text" name="localGuardian.name" label="Name" />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="localGuardian.occupation"
+                label="Occupation"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="localGuardian.contactNo"
+                label="Contact No."
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHInput
+                type="text"
+                name="localGuardian.address"
+                label="Address"
+              />
+            </Col>
+          </Row>
+          <Divider>Academic Info.</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                options={semesterOptions}
+                name="admissionSemester"
+                label="Admission Semester"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                options={semesterOptions}
+                name="academicDepartment"
+                label="Admission Department"
+              />
+            </Col>
+          </Row>
+          <Button htmlType="submit">Submit</Button>
+        </PHForm>
+      </Col>
+    </Row>
   );
 };
 
