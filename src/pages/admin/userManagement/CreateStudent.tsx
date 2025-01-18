@@ -85,7 +85,7 @@ const studentDefaultValues = {
     address: "456 Elm St, Hometown, Country",
     contactNo: "+1122334455",
   },
-
+  profileImg: "",
   // admissionSemester: "6753e1d956c0388297e7976d",
   // academicDepartment: "6753fb23d9f6c4dd8a0a4873",
 };
@@ -117,6 +117,7 @@ const CreateStudent = () => {
     };
     const formData = new FormData();
     formData.append("data", JSON.stringify(studentData));
+    formData.append("file", data.profileImg);
 
     addStudent(formData);
     //! This is for development just for checking
