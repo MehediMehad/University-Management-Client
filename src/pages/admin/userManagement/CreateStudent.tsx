@@ -4,9 +4,12 @@ import PHInput from "../../../components/form/PHInput";
 import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PHSelect from "../../../components/form/PHSelect";
 import { bloodGroupOptions, genderOptions } from "../../../constants/global";
-import { semesterOptions } from "../../../constants/semester";
 import PHDatePicker from "../../../components/form/PHDatePicker";
-import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
+import {
+  useGetAcademicDepartmentsQuery,
+  useGetAllSemestersQuery,
+} from "../../../redux/features/admin/academicManagement.api";
+import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.api";
 
 const studentDummyData = {
   password: "student123",
@@ -41,6 +44,7 @@ const studentDummyData = {
       address: "456 Elm St, Hometown, Country",
       contactNo: "+1122334455",
     },
+    profileImg: "dddddddddddddddd",
 
     admissionSemester: "6753e1d956c0388297e7976d",
     academicDepartment: "6753fb23d9f6c4dd8a0a4873",
@@ -60,9 +64,10 @@ const studentDefaultValues = {
   // dateOfBirth: "2002-05-15",
   bloodGroup: "A+",
 
-  email: "zobind9@example.com",
+  email: "z6obind9@example.com",
   contactNo: "+1234567890",
   emergencyContactNo: "+0987654321",
+  presentAddress: "123 Main St",
   permanentAddress: "123 Main St, Hometown, Country",
 
   guardian: {
@@ -81,28 +86,41 @@ const studentDefaultValues = {
     contactNo: "+1122334455",
   },
 
-  admissionSemester: "6753e1d956c0388297e7976d",
-  academicDepartment: "6753fb23d9f6c4dd8a0a4873",
+  // admissionSemester: "6753e1d956c0388297e7976d",
+  // academicDepartment: "6753fb23d9f6c4dd8a0a4873",
 };
 
 const CreateStudent = () => {
+  const [addStudent, { data, error }] = useAddStudentMutation();
+  console.log({ data, error });
+
   const { data: semesterData, isLoading: semesterLoading } =
     useGetAllSemestersQuery(undefined);
+
+  const { data: departmentData, isLoading: departmentLoading } =
+    useGetAcademicDepartmentsQuery(undefined, { skip: semesterLoading });
 
   const semesterOptions = semesterData?.data?.map((item) => ({
     value: item._id,
     label: `${item.name} ${item.year}`,
   }));
-  console.log("=>", semesterData);
-  console.log("=>", semesterLoading);
+
+  const departmentOptions = departmentData?.data?.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-    // const formData = new FormData();
-    // formData.append("data", JSON.stringify(data));
+    const studentData = {
+      password: "student123",
+      student: data,
+    };
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(studentData));
 
+    addStudent(formData);
     //! This is for development just for checking
-    // console.log(Object.fromEntries(formData));
+    console.log(Object.fromEntries(formData));
   };
   return (
     <Row>
@@ -135,7 +153,7 @@ const CreateStudent = () => {
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <Controller
-                name="image"
+                name="profileImg"
                 render={({ field: { onChange, value, ...field } }) => (
                   <Form.Item label="Picture">
                     <Input
@@ -264,7 +282,8 @@ const CreateStudent = () => {
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
-                options={semesterOptions}
+                options={departmentOptions}
+                disabled={departmentLoading}
                 name="academicDepartment"
                 label="Admission Department"
               />
