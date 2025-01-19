@@ -111,7 +111,7 @@ const AcademicSemester = () => {
     return <p>Loading....</p>;
   }
   return (
-    <Table<TTableData>
+    <Table
       loading={isFetching}
       columns={columns}
       dataSource={tableData}

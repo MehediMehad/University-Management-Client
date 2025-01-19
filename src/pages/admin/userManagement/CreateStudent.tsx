@@ -10,46 +10,45 @@ import {
   useGetAllSemestersQuery,
 } from "../../../redux/features/admin/academicManagement.api";
 import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.api";
+// const studentDummyData = {
+//   password: "student123",
+//   student: {
+//     name: {
+//       firstName: "Zbi2n",
+//       middleName: "Ali",
+//       lastName: "Khan",
+//     },
 
-const studentDummyData = {
-  password: "student123",
-  student: {
-    name: {
-      firstName: "Zbi2n",
-      middleName: "Ali",
-      lastName: "Khan",
-    },
+//     gender: "male",
+//     dateOfBirth: "2002-05-15",
+//     bloodGroup: "A+",
 
-    gender: "male",
-    dateOfBirth: "2002-05-15",
-    bloodGroup: "A+",
+//     email: "zobind9@example.com",
+//     contactNo: "+1234567890",
+//     emergencyContactNo: "+0987654321",
+//     permanentAddress: "123 Main St, Hometown, Country",
 
-    email: "zobind9@example.com",
-    contactNo: "+1234567890",
-    emergencyContactNo: "+0987654321",
-    permanentAddress: "123 Main St, Hometown, Country",
+//     guardian: {
+//       fatherName: "Richard Doe",
+//       fatherOccupation: "Engineer",
+//       fatherContactNo: "+1234509876",
+//       motherName: "Jane Doe",
+//       motherOccupation: "Teacher",
+//       motherContactNo: "+1234598765",
+//     },
 
-    guardian: {
-      fatherName: "Richard Doe",
-      fatherOccupation: "Engineer",
-      fatherContactNo: "+1234509876",
-      motherName: "Jane Doe",
-      motherOccupation: "Teacher",
-      motherContactNo: "+1234598765",
-    },
+//     localGuardian: {
+//       name: "Mike Ross",
+//       occupation: "Lawyer",
+//       address: "456 Elm St, Hometown, Country",
+//       contactNo: "+1122334455",
+//     },
+//     profileImg: "dddddddddddddddd",
 
-    localGuardian: {
-      name: "Mike Ross",
-      occupation: "Lawyer",
-      address: "456 Elm St, Hometown, Country",
-      contactNo: "+1122334455",
-    },
-    profileImg: "dddddddddddddddd",
-
-    admissionSemester: "6753e1d956c0388297e7976d",
-    academicDepartment: "6753fb23d9f6c4dd8a0a4873",
-  },
-};
+//     admissionSemester: "6753e1d956c0388297e7976d",
+//     academicDepartment: "6753fb23d9f6c4dd8a0a4873",
+//   },
+// };
 
 //! This is for development
 //! Should be removed
