@@ -1,12 +1,9 @@
-import { Button, Table, TableColumnsType } from "antd";
-import { TAcademicSemester } from "../../../types/academicManagement.type";
+import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
 import { useGetAllSemesterQuery } from "../../../redux/features/admin/courseManagement";
 import moment from "moment";
+import { TSemester } from "../../../types/courseManagement.type";
 
-type TTableData = Pick<
-  TAcademicSemester,
-  "name" | "year" | "startMonth" | "endMonth"
->;
+type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
 const RegisteredSemesters = () => {
   // const [params, setParams] = useState<TQueryParam[] | undefined>(undefined);
@@ -24,6 +21,14 @@ const RegisteredSemesters = () => {
       status,
     })
   );
+  const handleStatuesDropdown = (data) => {
+    console.log(data);
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleStatuesDropdown,
+  };
 
   const columns: TableColumnsType<TTableData> = [
     {
@@ -36,6 +41,19 @@ const RegisteredSemesters = () => {
       title: "Status",
       key: "status",
       dataIndex: "status",
+      render: (item) => {
+        let color;
+        if (item === "UPCOMING") {
+          color = "blue";
+        }
+        if (item === "ONGOING") {
+          color = "green";
+        }
+        if (item === "ENDED") {
+          color = "red";
+        }
+        return <Tag color={color}>{item}</Tag>;
+      },
     },
     {
       title: "Start Date",
@@ -52,9 +70,9 @@ const RegisteredSemesters = () => {
       key: "x",
       render: () => {
         return (
-          <div>
+          <Dropdown menu={menuProps}>
             <Button>Update</Button>
-          </div>
+          </Dropdown>
         );
       },
     },
@@ -95,29 +113,17 @@ const RegisteredSemesters = () => {
 
 export default RegisteredSemesters;
 
-// const data = [
-//   {
-//     key: "1",
-//     name: "John Brown",
-//     age: 32,
-//     address: "New York No. 1 Lake Park",
-//   },
-//   {
-//     key: "2",
-//     name: "Jim Green",
-//     age: 42,
-//     address: "London No. 1 Lake Park",
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sydney No. 1 Lake Park",
-//   },
-//   {
-//     key: "4",
-//     name: "Jim Red",
-//     age: 32,
-//     address: "London No. 2 Lake Park",
-//   },
-// ];
+const items = [
+  {
+    label: "ONGOING",
+    key: "UPCOMING",
+  },
+  {
+    label: "ONGOING",
+    key: "ONGOING",
+  },
+  {
+    label: "ENDED",
+    key: "ENDED",
+  },
+];
