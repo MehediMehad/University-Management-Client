@@ -12,8 +12,7 @@ import { useAddRegisteredSemesterMutation } from "../../../redux/features/admin/
 import { TResponse } from "../../../types";
 
 const SemesterRegistration = () => {
-  const [addSemester, { isLoading: RLoading }] =
-    useAddRegisteredSemesterMutation();
+  const [addSemester] = useAddRegisteredSemesterMutation();
   const { data: academicSemester } = useGetAllAcademicSemesterQuery([
     { name: "sort", value: "year" },
   ]);
