@@ -1,5 +1,8 @@
 import { Button, Modal, Table } from "antd";
-import { useGetAllCoursesQuery } from "../../../redux/features/admin/courseManagement";
+import {
+  useAddFacultiesMutation,
+  useGetAllCoursesQuery,
+} from "../../../redux/features/admin/courseManagement";
 import { useState } from "react";
 import PHForm from "../../../components/form/PHForm";
 import PHSelect from "../../../components/form/PHSelect";
@@ -29,7 +32,7 @@ const RegisteredSemesters = () => {
       title: "Action",
       key: "x",
       render: (item) => {
-        return <AddFacultyModal data={item} />;
+        return <AddFacultyModal facultyInfo={item} />;
       },
     },
   ];
@@ -47,9 +50,9 @@ const RegisteredSemesters = () => {
   );
 };
 
-const AddFacultyModal = ({ data }) => {
+const AddFacultyModal = ({ facultyInfo }) => {
   const { data: facultiesData } = useGetAllFacultiesQuery(undefined);
-  console.log(data.key);
+  const [addFaculty] = useAddFacultiesMutation();
   const facultiesOption = facultiesData?.data?.map((item) => ({
     value: item._id,
     label: `${item.name.firstName} ${item.name?.middleName} ${item.name?.lastName}`,
@@ -61,11 +64,12 @@ const AddFacultyModal = ({ data }) => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
   const handelSubmit = (data) => {
-    console.log(data);
+    const facultyData = {
+      courseId: facultyInfo.key,
+      data,
+    };
+    addFaculty(facultyData);
   };
 
   const handleCancel = () => {
@@ -80,8 +84,8 @@ const AddFacultyModal = ({ data }) => {
       <Modal
         title="Basic Modal"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
         <PHForm onSubmit={handelSubmit}>
           <PHSelect
@@ -90,7 +94,9 @@ const AddFacultyModal = ({ data }) => {
             name="faculties"
             label="Faculty"
           />
-          <Button htmlType="submit">Submit</Button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button htmlType="submit">Submit</Button>
+          </div>
         </PHForm>
       </Modal>
     </>
