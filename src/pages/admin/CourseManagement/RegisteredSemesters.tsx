@@ -13,11 +13,7 @@ type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 const RegisteredSemesters = () => {
   const [semesterId, setSemesterId] = useState("");
 
-  const {
-    data: semesterData,
-    isLoading,
-    isFetching,
-  } = useGetAllSemesterQuery(undefined);
+  const { data: semesterData, isLoading } = useGetAllSemesterQuery(undefined);
 
   const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
 
@@ -30,9 +26,7 @@ const RegisteredSemesters = () => {
       status,
     })
   );
-  const handleStatuesUpdate = async (data) => {
-    console.log("Sm ID =>", semesterId);
-    console.log("Sm Data =>", data.key);
+  const handleStatuesUpdate = async (data: any) => {
     const toastId = toast.loading("Update Semester Status");
     const updateData = {
       id: semesterId,
