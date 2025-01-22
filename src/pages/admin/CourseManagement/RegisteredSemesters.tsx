@@ -1,17 +1,25 @@
 import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
-import { useGetAllSemesterQuery } from "../../../redux/features/admin/courseManagement";
+import {
+  useGetAllSemesterQuery,
+  useUpdateRegisteredSemesterMutation,
+} from "../../../redux/features/admin/courseManagement";
 import moment from "moment";
 import { TSemester } from "../../../types/courseManagement.type";
+import { useState } from "react";
 
 type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
 const RegisteredSemesters = () => {
-  // const [params, setParams] = useState<TQueryParam[] | undefined>(undefined);
+  const [semesterId, setSemesterId] = useState("");
+
   const {
     data: semesterData,
     isLoading,
     isFetching,
   } = useGetAllSemesterQuery(undefined);
+
+  const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
+
   const tableData = semesterData?.data?.map(
     ({ _id, academicSemester, startDate, endDate, status }) => ({
       key: _id,
@@ -21,13 +29,22 @@ const RegisteredSemesters = () => {
       status,
     })
   );
-  const handleStatuesDropdown = (data) => {
-    console.log(data);
+  const handleStatuesUpdate = (data) => {
+    console.log("Sm ID =>", semesterId);
+    console.log("Sm Data =>", data.key);
+
+    const updateData = {
+      id: semesterId,
+      data: {
+        status: data.key,
+      },
+    };
+    updateSemesterStatus(updateData);
   };
 
   const menuProps = {
     items,
-    onClick: handleStatuesDropdown,
+    onClick: handleStatuesUpdate,
   };
 
   const columns: TableColumnsType<TTableData> = [
@@ -68,10 +85,10 @@ const RegisteredSemesters = () => {
     {
       title: "Action",
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
-          <Dropdown menu={menuProps}>
-            <Button>Update</Button>
+          <Dropdown menu={menuProps} trigger={["click"]}>
+            <Button onClick={() => setSemesterId(item.key)}>Update</Button>
           </Dropdown>
         );
       },
