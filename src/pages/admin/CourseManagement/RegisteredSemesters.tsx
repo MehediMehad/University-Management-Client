@@ -6,6 +6,7 @@ import {
 import moment from "moment";
 import { TSemester } from "../../../types/courseManagement.type";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
@@ -18,9 +19,7 @@ const RegisteredSemesters = () => {
     isFetching,
   } = useGetAllSemesterQuery(undefined);
 
-  const [updateSemesterStatus, { isError }] =
-    useUpdateRegisteredSemesterMutation();
-  console.log(isError);
+  const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
 
   const tableData = semesterData?.data?.map(
     ({ _id, academicSemester, startDate, endDate, status }) => ({
@@ -31,17 +30,29 @@ const RegisteredSemesters = () => {
       status,
     })
   );
-  const handleStatuesUpdate = (data) => {
+  const handleStatuesUpdate = async (data) => {
     console.log("Sm ID =>", semesterId);
     console.log("Sm Data =>", data.key);
-
+    const toastId = toast.loading("Update Semester Status");
     const updateData = {
       id: semesterId,
       data: {
         status: data.key,
       },
     };
-    updateSemesterStatus(updateData);
+    try {
+      const res = await updateSemesterStatus(updateData).unwrap();
+      toast.dismiss(toastId);
+      toast.success(`${res.message}` || "Status Updated", {
+        duration: 2000,
+      });
+      console.log("Update successful:", res);
+    } catch (error: any) {
+      const errorMessage =
+        error?.data?.message || "An error occurred while updating the status.";
+      toast.dismiss(toastId);
+      toast.success(errorMessage);
+    }
   };
 
   const menuProps = {
@@ -121,7 +132,7 @@ const RegisteredSemesters = () => {
   }
   return (
     <Table
-      loading={isFetching}
+      // loading={isFetching}
       columns={columns}
       dataSource={tableData}
       // onChange={onChange}
@@ -133,10 +144,10 @@ const RegisteredSemesters = () => {
 export default RegisteredSemesters;
 
 const items = [
-  {
-    label: "ONGOING",
-    key: "UPCOMING",
-  },
+  // {
+  //   label: "ONGOING",
+  //   key: "UPCOMING",
+  // },
   {
     label: "ONGOING",
     key: "ONGOING",
