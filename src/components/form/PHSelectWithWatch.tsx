@@ -11,7 +11,7 @@ type TPHSelectProps = {
   onValueChange: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const PHSelectWithWitch = ({
+const PHSelectWithWatch = ({
   label,
   name,
   options,
@@ -50,4 +50,4 @@ const PHSelectWithWitch = ({
   );
 };
 
-export default PHSelectWithWitch;
+export default PHSelectWithWatch;

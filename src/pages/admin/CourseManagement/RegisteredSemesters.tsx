@@ -1,6 +1,6 @@
 import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
 import {
-  useGetAllSemesterQuery,
+  useGetAllRegisteredSemestersQuery,
   useUpdateRegisteredSemesterMutation,
 } from "../../../redux/features/admin/courseManagement";
 import moment from "moment";
@@ -13,7 +13,8 @@ type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 const RegisteredSemesters = () => {
   const [semesterId, setSemesterId] = useState("");
 
-  const { data: semesterData, isLoading } = useGetAllSemesterQuery(undefined);
+  const { data: semesterData, isLoading } =
+    useGetAllRegisteredSemestersQuery(undefined);
 
   const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
 

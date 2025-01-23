@@ -7,7 +7,7 @@ import { baseApi } from "../../api/baseApi";
 
 const courseManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllSemester: builder.query({
+    getAllRegisteredSemesters: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
 
@@ -85,14 +85,38 @@ const courseManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["courses"],
     }),
+    getCourseFaculties: builder.query({
+      query: (id) => {
+        return {
+          url: `/courses/${id}/get-faculties`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+    createOfferedCourse: builder.mutation({
+      query: (data) => ({
+        url: `offered-courses/create-offered-course`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["courses"],
+    }),
   }),
 });
 
 export const {
   useAddRegisteredSemesterMutation,
-  useGetAllSemesterQuery,
+  useGetAllRegisteredSemestersQuery,
   useGetAllCoursesQuery,
   useAddCoursesMutation,
   useUpdateRegisteredSemesterMutation,
   useAddFacultiesMutation,
+  useGetCourseFacultiesQuery,
+  useCreateOfferedCourseMutation,
 } = courseManagementApi;
