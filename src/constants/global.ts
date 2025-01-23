@@ -37,3 +37,9 @@ export const weekDaysOptions = weekdays.map((item) => ({
   value: item,
   label: item,
 }));
+
+export const USER = {
+  ADMIN: "admin",
+  FACULTY: "faculty",
+  STUDENT: "student",
+} as const;
