@@ -1,4 +1,5 @@
 import { Form, Select } from "antd";
+import React, { useEffect } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 type TPHSelectProps = {
@@ -7,6 +8,7 @@ type TPHSelectProps = {
   options: { value: string; label: string; disabled?: boolean }[] | undefined;
   disabled?: boolean;
   mode?: "multiple" | undefined;
+  onValueChange: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const PHSelectWithWitch = ({
@@ -15,14 +17,18 @@ const PHSelectWithWitch = ({
   options,
   disabled,
   mode,
+  onValueChange,
 }: TPHSelectProps) => {
   const { control } = useFormContext();
   const inputValue = useWatch({
     control,
     name,
   });
+  useEffect(() => {
+    onValueChange(inputValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValue]);
 
-  console.log(inputValue);
   return (
     <Controller
       name={name}

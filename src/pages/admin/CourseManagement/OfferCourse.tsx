@@ -1,11 +1,15 @@
 import { Button, Col, Flex } from "antd";
 import PHForm from "../../../components/form/PHForm";
-import PHSelect from "../../../components/form/PHSelect";
 import PHInput from "../../../components/form/PHInput";
 import { useGetAllAcademicFacultiesQuery } from "../../../redux/features/admin/academicManagement.api";
 import PHSelectWithWitch from "../../../components/form/PHSelectWithWitch";
+import { useState } from "react";
+import { FieldValues, SubmitErrorHandler } from "react-hook-form";
 
 const OfferCourse = () => {
+  const [id, setId] = useState("");
+  console.log("INSIDE", id);
+
   const { data: academicFacultyData } =
     useGetAllAcademicFacultiesQuery(undefined);
 
@@ -14,7 +18,7 @@ const OfferCourse = () => {
     label: `${item.name}`,
   }));
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitErrorHandler<FieldValues> = (data) => {
     console.log(data);
   };
   return (
@@ -22,11 +26,12 @@ const OfferCourse = () => {
       <Col span={8}>
         <PHForm onSubmit={onSubmit}>
           <PHSelectWithWitch
+            onValueChange={setId}
             name="academicSemester"
             label="Academic Semester"
             options={academicFacultyOptions}
           />
-          <PHInput name="test" label="text" type="text" />
+          <PHInput disabled={!id} name="test" label="text" type="text" />
           <PHInput type="text" name="maxCredit" label="Max Credit" />
           <Button htmlType="submit">Submit</Button>
         </PHForm>
