@@ -21,8 +21,6 @@ const Login = () => {
   };
 
   const onSubmit = async (data: FieldValues) => {
-    console.log("33333333", data);
-
     const toastId = toast.loading("Logging in");
     try {
       const userInfo = {
@@ -30,11 +28,17 @@ const Login = () => {
         password: data.password,
       };
       const res = await login(userInfo).unwrap();
+      console.log(res);
+
       const user = verifyToken(res.data.accessToken) as TUser;
       toast.dismiss(toastId);
       dispatch(setUser({ user, token: res.data.accessToken }));
       toast.success("Logged in", { duration: 2000 });
-      navigate(`/${user.role}/dashboard`);
+      if (res?.data?.needsPasswordChange) {
+        navigate(`/change-password`);
+      } else {
+        navigate(`/${user.role}/dashboard`);
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.dismiss(toastId);

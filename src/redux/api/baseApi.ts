@@ -9,6 +9,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { logout, setUser } from "../features/auth/authSlice";
+import { toast } from "sonner";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api/v1",
@@ -29,6 +30,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions); // Making the initial API request
+  // console.log("..........>l", result);
+
+  // console.log("===>l", result?.data?.message);
+
+  if (result.error?.status === 403) {
+    toast.error(result?.error?.data.message, { duration: 3000 });
+  }
 
   // If the response returns a 401 Unauthorized error
   if (result.error?.status === 401) {
